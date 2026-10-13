@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const sql=readFileSync("supabase/migrations/20261015_plan_quotas.sql","utf8");
+assert.match(sql,/security definer/i);
+assert.match(sql,/visiora_subscriptions/);
+assert.match(sql,/current_period_end > now\(\)/);
+assert.match(sql,/on conflict\(user_id,usage_day,kind\) do update/i);
+assert.match(sql,/where public\.ai_usage_by_kind\.used < max_uses/i);
+assert.doesNotMatch(sql,/quota_plan|requested_plan|user_plan/i);
+for(const n of [100,30,10,3])assert.ok(sql.includes("then "+n)||sql.includes("else "+n));
+const limits=readFileSync("src/lib/plan-limits.ts","utf8");
+for(const tier of ["free","basic","premium"])assert.ok(limits.includes(tier+":"));
+console.log("PASS V2.2 static quota contracts; database concurrency tests require staging");

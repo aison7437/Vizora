@@ -13,7 +13,8 @@
     "test:deployment": "node scripts/check-deployment.mjs",
     "test:photo-security": "node scripts/check-photo-security.mjs",
     "test:v2": "node scripts/check-v2-contracts.mjs",
-    "test:v2-1": "node scripts/check-v2-1.mjs"
+    "test:v2-1": "node scripts/check-v2-1.mjs",
+    "test:v2-2": "node scripts/check-v2-2.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
