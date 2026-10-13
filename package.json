@@ -21,7 +21,8 @@
     "test:journey-execution": "node scripts/check-journey-execution.mjs",
     "test:wardrobe": "node scripts/check-wardrobe.mjs",
     "test:personalization": "node scripts/check-personalization.mjs",
-    "test:auth": "node scripts/check-auth.mjs"
+    "test:auth": "node scripts/check-auth.mjs",
+    "test:auth-recovery": "node scripts/check-auth-recovery.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
