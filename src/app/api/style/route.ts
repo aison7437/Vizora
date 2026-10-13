@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { consumeAiQuota, logAiEvent } from "@/lib/ai-controls";
 import { getSupabaseServerUser } from "@/lib/server-auth";
 export const runtime = "nodejs";
 const goals = ["Everyday confidence","Work & professional","Date night","Special event"] as const;
 export async function POST(request: Request) {
   const identity = await getSupabaseServerUser(request.headers.get("authorization"));
   if (!identity) return NextResponse.json({error:"Sign in required."},{status:401});
+  const token = request.headers.get("authorization")?.match(/^Bearer ([A-Za-z0-9._~-]+)$/)?.[1];
+  if(!token)return NextResponse.json({error:"Sign in required."},{status:401});
   const key = process.env.OPENAI_API_KEY;
   if (!key) return NextResponse.json({error:"AI styling is not configured."},{status:503});
   let body: unknown;
@@ -16,6 +19,10 @@ export async function POST(request: Request) {
   if (typeof goal !== "string" || !goals.includes(goal as typeof goals[number]) || typeof preferences !== "string" || preferences.length>500) {
     return NextResponse.json({error:"Select a valid goal and describe your preferences in up to 500 characters."},{status:400});
   }
+  const quota=await consumeAiQuota(token,"text");
+  if(quota==="unavailable")return NextResponse.json({error:"Usage controls unavailable."},{status:503});
+  if(quota==="limited")return NextResponse.json({error:"Daily text styling limit reached (10). Try tomorrow."},{status:429});
+  logAiEvent("request",{kind:"text"});
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions",{
       method:"POST",

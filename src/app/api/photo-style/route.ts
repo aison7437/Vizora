@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { consumeAiQuota, logAiEvent } from "@/lib/ai-controls";
 import { createClient } from "@supabase/supabase-js";
 export const runtime="nodejs";
 const goals=["Everyday confidence","Work & professional","Date night","Special event"];
@@ -18,9 +19,10 @@ export async function POST(request:Request){
   const {data:photo,error:photoError}=await supabase.storage.from("visiora-private").download(`${user.id}/style-photo`);
   if(photoError||!photo)return NextResponse.json({error:"Upload a photo first."},{status:404});
   if(photo.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(photo.type))return NextResponse.json({error:"Unsupported image."},{status:400});
-  const {data:allowed,error:quotaError}=await supabase.rpc("consume_photo_analysis_quota");
-  if(quotaError)return NextResponse.json({error:"Usage controls unavailable."},{status:503});
-  if(!allowed)return NextResponse.json({error:"Daily limit reached (3 photo analyses). Try again tomorrow."},{status:429});
+  const quota=await consumeAiQuota(token,"photo");
+  if(quota==="unavailable")return NextResponse.json({error:"Usage controls unavailable."},{status:503});
+  if(quota==="limited")return NextResponse.json({error:"Daily limit reached (3 photo analyses). Try again tomorrow."},{status:429});
+  logAiEvent("request",{kind:"photo"});
   const bytes=Buffer.from(await photo.arrayBuffer());
   const imageUrl=`data:${photo.type};base64,${bytes.toString("base64")}`;
   try{
