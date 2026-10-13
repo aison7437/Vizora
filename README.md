@@ -1,30 +1,28 @@
 # VISIORA
 
-Mobile-first personal styling studio. V1.1 includes a Supabase-backed account and preference profile.
+VISIORA is a mobile-first personal styling application under development.
 
-## Local development
+## Development
 
-Node.js 22+, npm:
+Requires Node.js 22+.
 
 ```bash
-npm ci
+npm install
 cp .env.example .env.local
 npm run dev
 ```
 
-Create a Supabase project, configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` using its project URL and publishable/anon key, and apply `supabase/migrations/20261013_profiles.sql` in the Supabase SQL editor or migrations CLI. Configure Auth email confirmation and production site URL/redirects in Supabase. The service-role key must never be exposed to client code.
+Configure a Supabase project and apply `supabase/migrations/20261013_profiles.sql`. Set the Supabase project URL and publishable/anon key in `.env.local`. Configure email confirmation and permitted redirects in Supabase Auth.
 
-Visit `/account` to register, sign in and save a style goal. The database has row-level security restricting access to each authenticated user's own profile. The homepage styling demo remains predefined, not AI-driven, and photos remain browser-local.
+For the AI Style Advisor at `/stylist`, configure `OPENAI_API_KEY` **server-side only**. The advisor requires a valid Supabase session, accepts a goal and up to 500 characters of preferences, and generates text-only suggestions. It does **not** analyze photos. API credentials must never be placed in `NEXT_PUBLIC_*` variables.
 
-## Status and next milestones
+## Features
 
-- [x] Mobile-first marketing page and local-only styling preview
-- [x] Auth UI and Supabase authentication integration (requires external configuration)
-- [x] Profile schema and row-level security
-- [x] CI workflow for lint, typecheck and build
-- [ ] Private image storage, retention/deletion, and consent audit
-- [ ] AI service, evaluation and safety tests
-- [ ] M-Pesa sandbox and subscription entitlement enforcement
-- [ ] Integration tests, security audit and production deployment
+- Responsive landing page and browser-local optional photo preview (no uploads).
+- Supabase email/password authentication and row-level-security-backed user style profile.
+- Authenticated, text-only AI styling endpoint and interface (requires external credentials).
+- GitHub Actions CI for typechecking, linting and building.
 
-Do not collect production photographs until secure storage, consent and deletion controls are implemented and tested.
+## Production blockers
+
+Before launch: rate limiting and abuse protection on AI endpoints, usage metering and quotas, private image storage with explicit consent/deletion controls, end-to-end tests, accessibility/security audits, payment integration and production monitoring. The current version is **not production-ready**.
