@@ -3,14 +3,16 @@
 import assert from "node:assert/strict";
 const base=process.env.VISIORA_STAGING_URL;
 if(!base||!/^https:\/\//.test(base)){console.error("VISIORA_STAGING_URL must be an HTTPS URL");process.exit(2)}
-const origin=new URL(base).origin;
+const target=new URL(base);
+if(target.username||target.password||target.search||target.hash||target.pathname!=="/"){console.error("VISIORA_STAGING_URL must be a clean HTTPS origin");process.exit(2)}
+const origin=target.origin;
 let failed=0;
 async function check(name,fn){
  try{await fn();console.log("PASS",name)}
  catch(e){failed++;console.error("FAIL",name,e instanceof Error?e.message:"unexpected error")}
 }
 async function request(path,options={}){
- const response=await fetch(new URL(path,origin),{...options,signal:AbortSignal.timeout(12000),redirect:"manual"});
+ const response=await fetch(new URL(path,origin),{...options,signal:AbortSignal.timeout(12000),redirect:"manual",cache:"no-store"});
  return response;
 }
 await check("liveness",async()=>{
