@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const registry=readFileSync("src/lib/agents/registry.ts","utf8");
+const ids=[...registry.matchAll(/\{id:"([^"]+)",kind:/g)].map(x=>x[1]);
+assert.equal(ids.length,15);
+assert.equal(new Set(ids).size,15);
+assert.equal(ids[0],"journey-orchestrator");
+for(const id of ["virtual-transformation","shopping-intelligence","appearance-intelligence"])assert.match(registry,new RegExp('id:"'+id+'",kind:"planned-integration"'));
+const planner=readFileSync("src/lib/agents/journey.ts","utf8");
+assert.match(planner,/photoConsent/);
+assert.match(planner,/verifiedPaid/);
+assert.match(planner,/!agent.enabled/);
+assert.match(planner,/NOT a user-authenticated execution gateway/);
+console.log("PASS fixed 15-agent registry and safe routing contract");
