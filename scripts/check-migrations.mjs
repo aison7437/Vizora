@@ -1,0 +1,13 @@
+import {readFileSync,readdirSync} from "node:fs";
+import assert from "node:assert/strict";
+const dir="supabase/migrations";
+const files=readdirSync(dir).filter(name=>name.endsWith(".sql"));
+const required=["20261013_profiles.sql","20261013_private_photos.sql","20261013_photo_storage_hardening.sql","20261013_ai_quotas.sql"];
+for(const name of required)assert.ok(files.includes(name),`Missing migration: ${name}`);
+const storage=readFileSync(`${dir}/20261013_photo_storage_hardening.sql`,"utf8");
+for(const verb of ["select","insert","update","delete"])assert.match(storage,new RegExp(`for ${verb} to authenticated`,"i"),`Missing ${verb} policy`);
+assert.match(storage,/name=\(select auth\.uid\(\)\)::text \|\| '\/style-photo'/);
+const quota=readFileSync(`${dir}/20261013_ai_quotas.sql`,"utf8");
+assert.match(quota,/on conflict\(user_id,usage_day,kind\) do update/i);
+assert.match(quota,/where public\.ai_usage_by_kind\.used < max_uses/i);
+console.log("PASS migration structure checks (static only; not a live database test)");

@@ -1,0 +1,25 @@
+name: VISIORA Staging Smoke
+on:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: staging
+    env:
+      VISIORA_STAGING_URL: ${{ vars.VISIORA_STAGING_URL }}
+      VISIORA_EXPECT_READY: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate staging URL
+        run: |
+          if [ -z "$VISIORA_STAGING_URL" ]; then
+            echo "Set the staging environment variable VISIORA_STAGING_URL before running this workflow."
+            exit 1
+          fi
+      - name: Run black-box smoke tests
+        run: node scripts/staging-smoke.mjs
