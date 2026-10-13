@@ -20,4 +20,5 @@ jobs:
       - run: npm run test:v2
       - run: npm run test:v2-1
       - run: npm run test:v2-2
+      - run: npm run test:agents
       - run: npm run build
