@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const page=readFileSync("src/app/page.tsx","utf8"),css=readFileSync("src/app/globals.css","utf8");
+for(const key of ["Discover my style","Explore starter ideas","My account","Hair","Makeup","Fashion","Grooming","KSh ","Photo uploads require separate consent","Paid subscriptions are planned"])assert.ok(page.includes(key),key);
+assert.match(page,/aria-pressed=\{style===item\}/);
+assert.match(page,/href="\/account"/);
+assert.match(css,/prefers-reduced-motion/);
+assert.match(css,/@media\(max-width:820px\)/);
+assert.doesNotMatch(page,/https?:\/\//);
+console.log("PASS V4 premium landing contract");

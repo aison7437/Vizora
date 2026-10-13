@@ -3,7 +3,7 @@ import {readFileSync} from "node:fs";
 const pricing=readFileSync("src/lib/plan-catalog.ts","utf8");
 for(const line of ['free:{label:"Free",monthlyKes:0}','basic:{label:"Basic",monthlyKes:499}','premium:{label:"Premium",monthlyKes:799}'])assert.ok(pricing.includes(line));
 const home=readFileSync("src/app/page.tsx","utf8");
-for(const price of ["KSh 0","KSh 499","KSh 799"])assert.ok(home.includes(price));
+assert.ok(home.includes("KSh {plan.price}") && home.includes('name:"Free",price:"0"') && home.includes('name:"Basic",price:"499"') && home.includes('name:"Premium",price:"799"'));
 const router=readFileSync("src/lib/appearance-orchestrator.ts","utf8");
 for(const specialist of ["hair","grooming","makeup","fashion","virtual-transformation"])assert.ok(router.includes(specialist));
 assert.ok(router.includes("paidEntitlementVerified")&&router.includes("photoConsent"));
