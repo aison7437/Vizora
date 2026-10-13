@@ -5,6 +5,8 @@ import {getEntitlement} from "@/lib/subscription-entitlements";
 import {AGENT_IDS} from "@/lib/agents/registry";
 import type {AgentId} from "@/lib/agents/registry";
 import {planJourney} from "@/lib/agents/journey";
+import {POST as executeAppearance} from "@/app/api/appearance/route";
+import {EXECUTABLE_AGENT_SPECIALISTS} from "@/lib/agents/executable-specialists";
 export const runtime="nodejs";
 export async function POST(request:Request){
  const auth=request.headers.get("authorization");
@@ -29,5 +31,21 @@ export async function POST(request:Request){
  if(error)return NextResponse.json({error:"Consent service unavailable."},{status:503});
  const decision=planJourney({intent:input.intent,requestedAgent:input.requestedAgent as AgentId|undefined,
   photoConsent:Boolean(consent&&!consent.revoked_at),verifiedPaid:entitlement.verifiedPaid});
+ if(input.execute!==undefined&&typeof input.execute!=="boolean")
+  return NextResponse.json({error:"Invalid execution flag."},{status:400});
+ if(input.execute===true){
+  if(decision.status!=="ready")return NextResponse.json({decision,error:decision.reason},{status:403,headers:{"Cache-Control":"no-store"}});
+  const specialist=EXECUTABLE_AGENT_SPECIALISTS[decision.agent as keyof typeof EXECUTABLE_AGENT_SPECIALISTS];
+  if(!specialist)return NextResponse.json({decision,error:"This agent has no execution adapter."},{status:501,headers:{"Cache-Control":"no-store"}});
+  if(typeof input.preferences!=="string"||input.preferences.length>500)
+   return NextResponse.json({error:"Preferences must be a string of at most 500 characters."},{status:400});
+  const result=await executeAppearance(new Request(request.url,{
+   method:"POST",headers:{"authorization":auth??"","content-type":"application/json"},
+   body:JSON.stringify({specialist,goal:input.intent.slice(0,200),preferences:input.preferences})
+  }));
+  const responseHeaders=new Headers(result.headers);
+  responseHeaders.set("Cache-Control","no-store");
+  return new Response(result.body,{status:result.status,headers:responseHeaders});
+ }
  return NextResponse.json({decision,plan:entitlement.plan,execution:"not-started"},{headers:{"Cache-Control":"no-store"}});
 }

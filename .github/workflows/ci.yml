@@ -23,4 +23,5 @@ jobs:
       - run: npm run test:agents
       - run: npm run test:journey
       - run: npm run test:occasion
+      - run: npm run test:journey-execution
       - run: npm run build
