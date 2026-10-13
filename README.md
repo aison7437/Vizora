@@ -1,28 +1,30 @@
 # VISIORA
 
-Personal AI styling studio — Phase V1 foundation.
+Mobile-first personal styling studio. V1.1 includes a Supabase-backed account and preference profile.
 
-## Run locally
+## Local development
 
-Requires Node.js 20+ and npm.
+Node.js 22+, npm:
 
 ```bash
-npm install
+npm ci
+cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000.
+Create a Supabase project, configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` using its project URL and publishable/anon key, and apply `supabase/migrations/20261013_profiles.sql` in the Supabase SQL editor or migrations CLI. Configure Auth email confirmation and production site URL/redirects in Supabase. The service-role key must never be exposed to client code.
 
-## Scope
+Visit `/account` to register, sign in and save a style goal. The database has row-level security restricting access to each authenticated user's own profile. The homepage styling demo remains predefined, not AI-driven, and photos remain browser-local.
 
-This first PR creates a responsive Next.js marketing site and an interactive **local-only styling preview**. The styling advice is predefined and **not AI-powered**. Optional images are selected only within the browser, are not transmitted, and are not analyzed. No login, database, payment, or external AI integration is implemented yet.
+## Status and next milestones
 
-## Next milestones
+- [x] Mobile-first marketing page and local-only styling preview
+- [x] Auth UI and Supabase authentication integration (requires external configuration)
+- [x] Profile schema and row-level security
+- [x] CI workflow for lint, typecheck and build
+- [ ] Private image storage, retention/deletion, and consent audit
+- [ ] AI service, evaluation and safety tests
+- [ ] M-Pesa sandbox and subscription entitlement enforcement
+- [ ] Integration tests, security audit and production deployment
 
-1. Authentication and database-backed user preferences.
-2. Private image storage with explicit consent, retention, and deletion controls.
-3. Server-side AI styling service with safety/quality evaluations.
-4. Subscription entitlements and M-Pesa sandbox payment flow.
-5. Automated tests, CI, accessibility review, and staging deployment.
-
-**Do not collect production user photographs until privacy controls are implemented and tested.**
+Do not collect production photographs until secure storage, consent and deletion controls are implemented and tested.
