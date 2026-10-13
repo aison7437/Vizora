@@ -30,3 +30,8 @@ Apply `supabase/migrations/20261013_ai_quotas.sql` after the existing migrations
 ## V1.5 staging acceptance
 
 Run `npm run test:static` for migration structure checks. Once staging is deployed, set GitHub Environment `staging` variable `VISIORA_STAGING_URL` to its HTTPS origin and manually trigger the **VISIORA Staging Smoke** workflow. See [V1.5 acceptance protocol](docs/v1-5-acceptance.md). This workflow does not substitute for real Supabase RLS, AI billing, and consent testing.
+
+
+## V1.6 deployment gate
+
+Run `npm run test:deployment` to validate the repository's deployment contract. Follow [V1.6 deployment instructions](docs/v1-6-deployment.md). No live staging deployment or external integration is implied by passing CI.
