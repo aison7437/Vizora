@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test:static": "node scripts/check-migrations.mjs",
     "test:staging": "node scripts/staging-smoke.mjs",
-    "test:deployment": "node scripts/check-deployment.mjs"
+    "test:deployment": "node scripts/check-deployment.mjs",
+    "test:photo-security": "node scripts/check-photo-security.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

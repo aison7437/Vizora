@@ -1,3 +1,4 @@
+import { hasValidImageSignature } from "@/lib/image-signature";
 import { NextResponse } from "next/server";
 import { consumeAiQuota, logAiEvent } from "@/lib/ai-controls";
 import { createClient } from "@supabase/supabase-js";
@@ -24,6 +25,7 @@ export async function POST(request:Request){
   if(quota==="limited")return NextResponse.json({error:"Daily limit reached (3 photo analyses). Try again tomorrow."},{status:429});
   logAiEvent("request",{kind:"photo"});
   const bytes=Buffer.from(await photo.arrayBuffer());
+  if(!hasValidImageSignature(bytes,photo.type))return NextResponse.json({error:"Image contents do not match the declared format."},{status:400});
   const imageUrl=`data:${photo.type};base64,${bytes.toString("base64")}`;
   try{
     const response=await fetch("https://api.openai.com/v1/chat/completions",{

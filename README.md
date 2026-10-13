@@ -40,3 +40,8 @@ Run `npm run test:deployment` to validate the repository's deployment contract. 
 ## V1.7 staging safety
 
 Use the [explicit SQL migration order and staging handoff](docs/v1-7-staging-safety.md); alphabetical migration order is unsafe for the photo storage hardening migration.
+
+
+## V1.8 photo input hardening
+
+Photo AI rejects unsupported image signatures even if storage metadata claims JPEG, PNG or WebP. Run `npm run test:photo-security` for static integration checks. Live staging and privacy verification remain required.

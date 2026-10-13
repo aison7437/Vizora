@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const source=readFileSync("src/lib/image-signature.ts","utf8");
+assert.match(source,/image\/jpeg/);
+assert.match(source,/image\/png/);
+assert.match(source,/image\/webp/);
+const route=readFileSync("src/app/api/photo-style/route.ts","utf8");
+assert.match(route,/hasValidImageSignature\(bytes,photo.type\)/);
+assert.ok(route.indexOf("hasValidImageSignature(bytes,photo.type)")<route.indexOf("bytes.toString(\"base64\")"),"Signature must be validated before encoding for provider");
+console.log("PASS photo format validation wiring (static assertions)");
