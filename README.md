@@ -6,7 +6,7 @@ VISIORA is a mobile-first personal styling application under active development.
 
 Requires Node.js 22+. Run `npm install`, copy `.env.example` to `.env.local`, then `npm run dev`.
 
-Configure Supabase Auth and apply **both** SQL migrations in `supabase/migrations/` in order. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Set server-only `OPENAI_API_KEY` to enable AI services. Never expose secret keys via `NEXT_PUBLIC_`.
+Configure Supabase Auth and apply **all three** SQL migrations in `supabase/migrations/` in filename order. See [photo acceptance protocol](docs/photo-acceptance.md) before enabling staging uploads. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Set server-only `OPENAI_API_KEY` to enable AI services. Never expose secret keys via `NEXT_PUBLIC_`.
 
 - `/`: landing page and browser-local demo photo picker (no upload)
 - `/account`: email/password authentication and personal style preferences
