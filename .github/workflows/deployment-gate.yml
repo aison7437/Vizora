@@ -1,0 +1,20 @@
+name: VISIORA Deployment Gate
+on:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate deployment contract
+        run: node scripts/check-deployment.mjs
+      - name: Validate types and lint
+        run: npm run typecheck && npm run lint
+      - name: Build
+        run: npm run build
