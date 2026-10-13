@@ -1,0 +1,15 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const journey=readFileSync("src/app/api/journey/route.ts","utf8");
+const adapter=readFileSync("src/lib/agents/executable-specialists.ts","utf8");
+assert.match(journey,/input\.execute===true/);
+assert.match(journey,/decision\.status!=="ready"/);
+assert.match(journey,/EXECUTABLE_AGENT_SPECIALISTS/);
+assert.match(journey,/executeAppearance\(new Request/);
+assert.match(journey,/input\.preferences\.length>500/);
+assert.doesNotMatch(journey,/input\.verifiedPaid|input\.photoConsent/);
+assert.match(adapter,/satisfies Partial<Record<AgentId,Specialist>>/);
+const mapped=[...adapter.matchAll(/"([a-z]+-intelligence)":"([a-z]+)"/g)];
+assert.equal(mapped.length,5);
+assert.doesNotMatch(adapter,/"virtual-transformation":/);
+console.log("PASS journey specialist execution allowlist and guards");
