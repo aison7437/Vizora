@@ -20,3 +20,8 @@ Photos are stored in the private `visiora-private` Supabase Storage bucket at `<
 ## Before production
 
 The photo endpoint has an atomic per-user daily quota, but **global IP abuse protection, cost monitoring, image content moderation, end-to-end tests, deletion/retention audits, deployment configuration and legal/privacy review** are still required. Text-only AI endpoint also needs quotas. This is not a production launch approval.
+
+
+## V1.4 staging readiness
+
+Apply `supabase/migrations/20261013_ai_quotas.sql` after the existing migrations. The authenticated AI endpoints now use atomic daily limits (text 10, photo 3). `/api/health` reports application liveness; `/api/ready` reports whether required environment variables are present, **not** provider connectivity. Follow [the staging runbook](docs/staging-runbook.md). Production integration remains unverified.
