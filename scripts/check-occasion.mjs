@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const api=readFileSync("src/app/api/appearance/route.ts","utf8");
+const router=readFileSync("src/lib/appearance-orchestrator.ts","utf8");
+assert.match(api,/occasion:OCCASION_SPECIALIST_INSTRUCTION/);
+assert.match(router,/occasion:\{specialist:"occasion"/);
+assert.match(router,/wedding\|occasion\|event\|date night/);
+assert.match(api,/consumeAiQuota/);
+assert.match(api,/getSupabaseServerUser/);
+console.log("PASS occasion specialist API integration static checks");

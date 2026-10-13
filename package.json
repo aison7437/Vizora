@@ -16,7 +16,8 @@
     "test:v2-1": "node scripts/check-v2-1.mjs",
     "test:v2-2": "node scripts/check-v2-2.mjs",
     "test:agents": "node scripts/check-agent-registry.mjs",
-    "test:journey": "node scripts/check-journey-api.mjs"
+    "test:journey": "node scripts/check-journey-api.mjs",
+    "test:occasion": "node scripts/check-occasion.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

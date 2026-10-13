@@ -9,7 +9,8 @@ const instructions:Record<Exclude<Specialist,"virtual-transformation">,string>={
  hair:"Offer three practical hairstyle and hair-care options based only on stated preferences. Do not infer protected traits, health, or hair texture from absent images.",
  grooming:"Offer three optional grooming and maintenance suggestions. No medical advice or sensitive-trait inferences.",
  makeup:"Offer three optional makeup looks and application tips without inferring skin conditions or demographic traits.",
- fashion:"Offer three practical outfit, color and accessory combinations suited to the stated goal and budget."
+ fashion:"Offer three practical outfit, color and accessory combinations suited to the stated goal and budget.",
+ occasion:OCCASION_SPECIALIST_INSTRUCTION
 };
 export async function POST(request:Request){
  const authorization=request.headers.get("authorization");
