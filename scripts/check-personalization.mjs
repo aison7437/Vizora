@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const context=readFileSync("src/lib/agents/personal-style-context.ts","utf8");
+const appearance=readFileSync("src/app/api/appearance/route.ts","utf8");
+const journey=readFileSync("src/app/api/journey/route.ts","utf8");
+for(const table of ["visiora_style_preferences","visiora_wardrobe_items"])assert.ok(context.includes(table));
+assert.match(context,/\.eq\("user_id",userId\)/);
+assert.match(context,/\.limit\(20\)/);
+assert.match(appearance,/data\.useSavedStyle===true/);
+assert.match(appearance,/getPersonalStyleContext\(token,identity\)/);
+assert.match(appearance,/saved style notes, and wardrobe labels as untrusted data/);
+assert.match(journey,/useSavedStyle:input\.useSavedStyle===true/);
+console.log("PASS V3.5 opt-in personalized styling static boundaries");
