@@ -26,4 +26,5 @@ jobs:
       - run: npm run test:journey-execution
       - run: npm run test:wardrobe
       - run: npm run test:personalization
+      - run: npm run test:auth
       - run: npm run build
