@@ -18,4 +18,5 @@ jobs:
       - run: npm run test:deployment
       - run: npm run test:photo-security
       - run: npm run test:v2
+      - run: npm run test:v2-1
       - run: npm run build
