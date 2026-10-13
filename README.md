@@ -1,28 +1,22 @@
 # VISIORA
 
-VISIORA is a mobile-first personal styling application under development.
+VISIORA is a mobile-first personal styling application under active development.
 
-## Development
+## Run
 
-Requires Node.js 22+.
+Requires Node.js 22+. Run `npm install`, copy `.env.example` to `.env.local`, then `npm run dev`.
 
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
-```
+Configure Supabase Auth and apply **both** SQL migrations in `supabase/migrations/` in order. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Set server-only `OPENAI_API_KEY` to enable AI services. Never expose secret keys via `NEXT_PUBLIC_`.
 
-Configure a Supabase project and apply `supabase/migrations/20261013_profiles.sql`. Set the Supabase project URL and publishable/anon key in `.env.local`. Configure email confirmation and permitted redirects in Supabase Auth.
+- `/`: landing page and browser-local demo photo picker (no upload)
+- `/account`: email/password authentication and personal style preferences
+- `/stylist`: authenticated text-only AI style advice
+- `/photos`: explicit consent, private photo upload/delete and AI vision styling (3 analyses/day/user)
 
-For the AI Style Advisor at `/stylist`, configure `OPENAI_API_KEY` **server-side only**. The advisor requires a valid Supabase session, accepts a goal and up to 500 characters of preferences, and generates text-only suggestions. It does **not** analyze photos. API credentials must never be placed in `NEXT_PUBLIC_*` variables.
+## Photo privacy
 
-## Features
+Photos are stored in the private `visiora-private` Supabase Storage bucket at `<user-id>/style-photo`. Storage policies limit access to the authenticated owner; uploads require an active consent record. Only one current photo per user is supported. Photo analysis reads the private photo server-side and sends it to the configured AI provider when explicitly requested. Deleting the photo removes it from storage; revocation records the consent change. Provider retention policies may apply independently. Photos are not public or used to identify users.
 
-- Responsive landing page and browser-local optional photo preview (no uploads).
-- Supabase email/password authentication and row-level-security-backed user style profile.
-- Authenticated, text-only AI styling endpoint and interface (requires external credentials).
-- GitHub Actions CI for typechecking, linting and building.
+## Before production
 
-## Production blockers
-
-Before launch: rate limiting and abuse protection on AI endpoints, usage metering and quotas, private image storage with explicit consent/deletion controls, end-to-end tests, accessibility/security audits, payment integration and production monitoring. The current version is **not production-ready**.
+The photo endpoint has an atomic per-user daily quota, but **global IP abuse protection, cost monitoring, image content moderation, end-to-end tests, deletion/retention audits, deployment configuration and legal/privacy review** are still required. Text-only AI endpoint also needs quotas. This is not a production launch approval.
