@@ -18,7 +18,8 @@
     "test:agents": "node scripts/check-agent-registry.mjs",
     "test:journey": "node scripts/check-journey-api.mjs",
     "test:occasion": "node scripts/check-occasion.mjs",
-    "test:journey-execution": "node scripts/check-journey-execution.mjs"
+    "test:journey-execution": "node scripts/check-journey-execution.mjs",
+    "test:wardrobe": "node scripts/check-wardrobe.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

@@ -24,4 +24,5 @@ jobs:
       - run: npm run test:journey
       - run: npm run test:occasion
       - run: npm run test:journey-execution
+      - run: npm run test:wardrobe
       - run: npm run build
