@@ -22,7 +22,8 @@
     "test:wardrobe": "node scripts/check-wardrobe.mjs",
     "test:personalization": "node scripts/check-personalization.mjs",
     "test:auth": "node scripts/check-auth.mjs",
-    "test:auth-recovery": "node scripts/check-auth-recovery.mjs"
+    "test:auth-recovery": "node scripts/check-auth-recovery.mjs",
+    "test:landing": "node scripts/check-landing.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
