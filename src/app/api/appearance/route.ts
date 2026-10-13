@@ -1,3 +1,4 @@
+import {OCCASION_SPECIALIST_INSTRUCTION} from "@/lib/agents/occasion";
 import {NextResponse} from "next/server";
 import {getSupabaseServerUser} from "@/lib/server-auth";
 import {consumeAiQuota} from "@/lib/ai-controls";
