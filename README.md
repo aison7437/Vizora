@@ -35,3 +35,8 @@ Run `npm run test:static` for migration structure checks. Once staging is deploy
 ## V1.6 deployment gate
 
 Run `npm run test:deployment` to validate the repository's deployment contract. Follow [V1.6 deployment instructions](docs/v1-6-deployment.md). No live staging deployment or external integration is implied by passing CI.
+
+
+## V1.7 staging safety
+
+Use the [explicit SQL migration order and staging handoff](docs/v1-7-staging-safety.md); alphabetical migration order is unsafe for the photo storage hardening migration.
