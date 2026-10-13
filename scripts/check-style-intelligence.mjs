@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const route=readFileSync("src/app/api/style-intelligence/route.ts","utf8");
+const engine=readFileSync("src/lib/style-intelligence.ts","utf8");
+assert.match(route,/wardrobeContext/);
+assert.match(route,/eq\("user_id",context.userId\)/);
+assert.match(route,/Cache-Control":"no-store/);
+assert.match(route,/Invalid occasion or budget/);
+assert.match(engine,/estimatedSpend:0,verifiedRetailPrices:false/);
+assert.match(engine,/missingCategories/);
+assert.match(engine,/avoid_colors/);
+assert.doesNotMatch(engine,/fetch\(/);
+console.log("PASS V4.1 style intelligence contracts");
