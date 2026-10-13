@@ -27,4 +27,5 @@ jobs:
       - run: npm run test:wardrobe
       - run: npm run test:personalization
       - run: npm run test:auth
+      - run: npm run test:auth-recovery
       - run: npm run build

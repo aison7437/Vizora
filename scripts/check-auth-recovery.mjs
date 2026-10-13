@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const page=readFileSync("src/app/account/page.tsx","utf8");
+assert.match(page,/setOtpRecipient\(value\)/);
+assert.match(page,/email:otpRecipient/);
+assert.match(page,/phone:otpRecipient/);
+assert.match(page,/params\.get\("error_description"\)/);
+assert.match(page,/setBusy\(false\);\n  }\n  async function sendCode/);
+assert.match(page,/user\.email\?\?user\.phone/);
+console.log("PASS V3.7 auth recovery static checks");
