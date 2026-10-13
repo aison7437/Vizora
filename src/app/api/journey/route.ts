@@ -37,11 +37,13 @@ export async function POST(request:Request){
   if(decision.status!=="ready")return NextResponse.json({decision,error:decision.reason},{status:403,headers:{"Cache-Control":"no-store"}});
   const specialist=EXECUTABLE_AGENT_SPECIALISTS[decision.agent as keyof typeof EXECUTABLE_AGENT_SPECIALISTS];
   if(!specialist)return NextResponse.json({decision,error:"This agent has no execution adapter."},{status:501,headers:{"Cache-Control":"no-store"}});
+  if(input.useSavedStyle!==undefined&&typeof input.useSavedStyle!=="boolean")
+   return NextResponse.json({error:"Invalid saved-style preference."},{status:400});
   if(typeof input.preferences!=="string"||input.preferences.length>500)
    return NextResponse.json({error:"Preferences must be a string of at most 500 characters."},{status:400});
   const result=await executeAppearance(new Request(request.url,{
    method:"POST",headers:{"authorization":auth??"","content-type":"application/json"},
-   body:JSON.stringify({specialist,goal:input.intent.slice(0,200),preferences:input.preferences})
+   body:JSON.stringify({specialist,goal:input.intent.slice(0,200),preferences:input.preferences,useSavedStyle:input.useSavedStyle===true})
   }));
   const responseHeaders=new Headers(result.headers);
   responseHeaders.set("Cache-Control","no-store");
