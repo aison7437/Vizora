@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:static": "node scripts/check-migrations.mjs",
+    "test:staging": "node scripts/staging-smoke.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

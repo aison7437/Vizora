@@ -25,3 +25,8 @@ The photo endpoint has an atomic per-user daily quota, but **global IP abuse pro
 ## V1.4 staging readiness
 
 Apply `supabase/migrations/20261013_ai_quotas.sql` after the existing migrations. The authenticated AI endpoints now use atomic daily limits (text 10, photo 3). `/api/health` reports application liveness; `/api/ready` reports whether required environment variables are present, **not** provider connectivity. Follow [the staging runbook](docs/staging-runbook.md). Production integration remains unverified.
+
+
+## V1.5 staging acceptance
+
+Run `npm run test:static` for migration structure checks. Once staging is deployed, set GitHub Environment `staging` variable `VISIORA_STAGING_URL` to its HTTPS origin and manually trigger the **VISIORA Staging Smoke** workflow. See [V1.5 acceptance protocol](docs/v1-5-acceptance.md). This workflow does not substitute for real Supabase RLS, AI billing, and consent testing.
