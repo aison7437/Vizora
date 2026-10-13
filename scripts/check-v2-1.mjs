@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const sql=readFileSync("supabase/migrations/20261014_subscriptions.sql","utf8");
+assert.match(sql,/enable row level security/i);
+assert.match(sql,/grant select .* to authenticated/i);
+assert.doesNotMatch(sql,/grant (insert|update|delete|all) .* to authenticated/i);
+assert.match(sql,/auth.uid\(\)/);
+const ent=readFileSync("src/lib/subscription-entitlements.ts","utf8");
+assert.match(ent,/current_period_end/);
+assert.match(ent,/Date\.now\(\)/);
+assert.match(ent,/verifiedPaid:false/);
+const route=readFileSync("src/app/api/appearance\/route.ts","utf8");
+for(const s of ["hair","grooming","makeup","fashion"])assert.ok(route.includes(s));
+assert.match(route,/getSupabaseServerUser/);
+assert.match(route,/consumeAiQuota/);
+assert.match(route,/Virtual transformations are not yet available/);
+console.log("PASS subscription and specialist contract checks (static only)");
