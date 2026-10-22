@@ -24,7 +24,8 @@
     "test:auth": "node scripts/check-auth.mjs",
     "test:auth-recovery": "node scripts/check-auth-recovery.mjs",
     "test:style-intelligence": "node scripts/check-style-intelligence.mjs",
-    "test:landing": "node scripts/check-landing.mjs"
+    "test:landing": "node scripts/check-landing.mjs",
+    "test:account-mobile": "node scripts/check-account-mobile.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
