@@ -30,4 +30,5 @@ jobs:
       - run: npm run test:auth-recovery
       - run: npm run test:style-intelligence
       - run: npm run test:landing
+      - run: npm run test:account-mobile
       - run: npm run build
